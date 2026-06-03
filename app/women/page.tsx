@@ -26,7 +26,7 @@ export default function WomenPage() {
               </p>
 
               <a
-                href="https://wa.me/"
+                href="https://wa.me/97470768582"
                 className="block text-center bg-black text-white py-3 rounded-full mt-4"
               >
                 Order on WhatsApp

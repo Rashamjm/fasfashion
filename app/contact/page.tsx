@@ -15,7 +15,7 @@ export default function ContactPage() {
         </p>
 
         <a
-          href="https://wa.me/"
+          href="https://wa.me/97470768582"
           className="inline-block mt-6 bg-black text-white px-8 py-4 rounded-full"
         >
           Chat on WhatsApp
