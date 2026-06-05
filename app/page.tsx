@@ -1,6 +1,8 @@
+export const dynamic = "force-dynamic";
+
 async function getMenProducts() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/products?gender=eq.Men&select=*`,
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/products?select=*&gender=eq.Men`,
     {
       headers: {
         apikey:
@@ -15,7 +17,7 @@ async function getMenProducts() {
     }
   );
 
-  return res.json();
+  return response.json();
 }
 
 export default async function MenPage() {
@@ -23,19 +25,14 @@ export default async function MenPage() {
     await getMenProducts();
 
   return (
-    <main className="bg-[#faf8f5] min-h-screen px-6 md:px-14 py-20">
-
-      <p className="tracking-[6px] text-neutral-500 uppercase">
-        Premium Collection
-      </p>
-
-      <h1 className="text-6xl font-bold mt-4 mb-14">
+    <main className="min-h-screen bg-[#faf8f5] px-6 md:px-14 py-20">
+      <h1 className="text-6xl font-bold mb-12">
         Men Collection
       </h1>
 
       <div className="grid md:grid-cols-3 gap-8">
-        {products?.map(
-          (product: any) => (
+        {products?.length > 0 ? (
+          products.map((product: any) => (
             <div
               key={product.id}
               className="bg-white rounded-[30px] overflow-hidden"
@@ -47,30 +44,24 @@ export default async function MenPage() {
               />
 
               <div className="p-6">
-                <h3 className="text-2xl font-semibold">
+                <h2 className="text-2xl font-bold">
                   {product.name}
-                </h3>
+                </h2>
 
-                <p className="text-neutral-600 mt-2">
+                <p className="mt-2 text-neutral-600">
                   {product.description}
                 </p>
 
-                <p className="font-bold text-xl mt-4">
+                <p className="font-bold mt-4">
                   Rs. {product.price_lkr}
                 </p>
-
-                <a
-                  href="https://wa.me/947XXXXXXXX"
-                  className="block text-center bg-black text-white py-4 rounded-full mt-5"
-                >
-                  WhatsApp Order
-                </a>
               </div>
             </div>
-          )
+          ))
+        ) : (
+          <p>No products found</p>
         )}
       </div>
-
     </main>
   );
 }
