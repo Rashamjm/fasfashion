@@ -1,25 +1,29 @@
-const products = [
-  {
-    name: "Luxury Evening Dress",
-    price: "Rs. 7,500",
-    image:
-      "https://images.pexels.com/photos/1488463/pexels-photo-1488463.jpeg",
-  },
-  {
-    name: "Elegant Premium Wear",
-    price: "Rs. 9,900",
-    image:
-      "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg",
-  },
-  {
-    name: "Modern Luxury Fashion",
-    price: "Rs. 8,200",
-    image:
-      "https://images.pexels.com/photos/994523/pexels-photo-994523.jpeg",
-  },
-];
+export const dynamic = "force-dynamic";
 
-export default function WomenPage() {
+async function getWomenProducts() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/products?gender=eq.Women&select=*`,
+    {
+      headers: {
+        apikey:
+          process.env
+            .NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        Authorization: `Bearer ${
+          process.env
+            .NEXT_PUBLIC_SUPABASE_ANON_KEY
+        }`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  return res.json();
+}
+
+export default async function WomenPage() {
+  const products =
+    await getWomenProducts();
+
   return (
     <main className="bg-[#faf8f5] min-h-screen px-6 md:px-14 py-16">
 
@@ -34,37 +38,45 @@ export default function WomenPage() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-8">
+        {products?.length > 0 ? (
+          products.map((product: any) => (
+            <div
+              key={product.id}
+              className="bg-white rounded-[35px] overflow-hidden hover:shadow-xl transition"
+            >
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className="h-[500px] object-cover w-full"
+              />
 
-        {products.map((product, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-[35px] overflow-hidden hover:shadow-xl transition"
-          >
-            <img
-              src={product.image}
-              className="h-[500px] object-cover w-full"
-            />
+              <div className="p-6">
+                <h3 className="text-2xl font-semibold">
+                  {product.name}
+                </h3>
 
-            <div className="p-6">
-              <h3 className="text-2xl font-semibold">
-                {product.name}
-              </h3>
+                <p className="text-neutral-600 mt-2">
+                  {product.description}
+                </p>
 
-              <p className="font-bold mt-3 text-lg">
-                {product.price}
-              </p>
+                <p className="font-bold mt-3 text-lg">
+                  Rs. {product.price_lkr}
+                </p>
 
-              <a
-                href="https://wa.me/947XXXXXXXX"
-                className="block text-center bg-black text-white py-4 rounded-full mt-6"
-              >
-                Order via WhatsApp
-              </a>
+                <a
+                  href="https://wa.me/947XXXXXXXX"
+                  className="block text-center bg-black text-white py-4 rounded-full mt-6"
+                >
+                  Order via WhatsApp
+                </a>
+              </div>
             </div>
-          </div>
-        ))}
-
+          ))
+        ) : (
+          <p>No Women Products Found</p>
+        )}
       </div>
+
     </main>
   );
 }
