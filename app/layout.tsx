@@ -5,8 +5,9 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 export const metadata: Metadata = {
-  title: "FasFashion",
-  description: "Luxury Fashion Store",
+  title: "FasFashion | Luxury Fashion Store",
+  description:
+    "Premium men's and women's fashion in Sri Lanka.",
 };
 
 export default function RootLayout({
